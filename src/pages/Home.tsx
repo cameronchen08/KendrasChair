@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import Lightbox from '../components/Lightbox';
 import './Home.css';
 
+const BASE = import.meta.env.BASE_URL;
+
 const GALLERY_IMAGES = [
-  '/images/Kendra_H_366.jpg',
-  '/images/Kendra_H_191.jpg',
-  '/images/Kendra_H_403.jpg',
+  `${BASE}images/Kendra_H_366.jpg`,
+  `${BASE}images/Kendra_H_191.jpg`,
+  `${BASE}images/Kendra_H_403.jpg`,
 ];
 
 const SPARKLE_COUNT = 60;
@@ -109,7 +111,7 @@ export default function Home() {
             <div className="about-photo-wrap">
               <img
                 className="about-photo"
-                src="/images/Kendra_H_276.jpg"
+                src={`${BASE}images/Kendra_H_276.jpg`}
                 alt="Kendra"
                 onClick={() => setProfileOpen(true)}
                 style={{ cursor: 'zoom-in' }}
@@ -237,7 +239,7 @@ export default function Home() {
 
       {/* Banner */}
       <div className="home-banner">
-        <img src="/images/Tres-jolie-hair-web-banner.png" alt="Tres Jolie Hair" />
+        <img src={`${BASE}images/Tres-jolie-hair-web-banner.png`} alt="Tres Jolie Hair" />
       </div>
 
       {/* Footer */}
@@ -251,7 +253,7 @@ export default function Home() {
       {/* Profile lightbox */}
       {profileOpen && (
         <Lightbox
-          images={['/images/Kendra_H_276.jpg']}
+          images={[`${BASE}images/Kendra_H_276.jpg`]}
           index={0}
           onClose={() => setProfileOpen(false)}
           alt="Kendra"
