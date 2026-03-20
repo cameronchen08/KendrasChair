@@ -1,0 +1,382 @@
+/* ── Admin page ───────────────────────────────────────────────── */
+
+.admin-page {
+  min-height: 100vh;
+  background: #f7f3ef;
+}
+
+/* ── Auth gate ────────────────────────────────────────────────── */
+
+.auth-overlay {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #3d5235, #7a8a60);
+}
+
+.auth-dialog {
+  background: #fff;
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-icon {
+  font-size: 3rem;
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--brown-dark);
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.auth-back {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+
+.admin-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 24px;
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+
+.admin-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--brown-dark);
+}
+
+.admin-subtitle {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-ghost-dark {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--brown);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--font-sans);
+}
+
+.btn-ghost-dark:hover {
+  background: #fff0ee;
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* ── Controls ─────────────────────────────────────────────────── */
+
+.admin-controls {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-search-wrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-file-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 50px;
+}
+
+.file-status--connected {
+  background: #e8f4e8;
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+/* ── Admin grid ───────────────────────────────────────────────── */
+
+.admin-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* ── Admin card ───────────────────────────────────────────────── */
+
+.admin-card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-card-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.admin-card-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--blush), var(--rose));
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.admin-card-info {
+  padding: 14px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  align-items: center;
+}
+
+.admin-card-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brown-dark);
+  text-align: center;
+}
+
+.admin-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px 14px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  justify-content: center;
+}
+
+.btn-sm {
+  padding: 7px 14px !important;
+  font-size: 0.82rem !important;
+  border-radius: 8px !important;
+}
+
+/* ── Form modal ───────────────────────────────────────────────── */
+
+.admin-modal {
+  max-width: 640px;
+}
+
+/* ── Photo upload ─────────────────────────────────────────────── */
+
+.photo-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.photo-preview-wrap {
+  position: relative;
+}
+
+.photo-preview {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border);
+}
+
+.photo-remove-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.photo-placeholder-btn {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: border-color 0.15s;
+}
+
+.photo-placeholder-btn span:first-child {
+  font-size: 1.4rem;
+}
+
+.photo-placeholder-btn:hover {
+  border-color: var(--green);
+}
+
+/* ── Portfolio ────────────────────────────────────────────────── */
+
+.portfolio-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portfolio-thumb-wrap {
+  position: relative;
+}
+
+.portfolio-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.portfolio-thumb-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.portfolio-add-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 2px dashed var(--border);
+  background: var(--cream);
+  font-size: 2rem;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.portfolio-add-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ── Form actions ─────────────────────────────────────────────── */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ── Input error ─────────────────────────────────────────────── */
+
+.input-error {
+  border-color: #d9534f !important;
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--muted);
+}
