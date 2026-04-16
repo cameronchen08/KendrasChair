@@ -14,6 +14,8 @@ A React + TypeScript website for Kendra, a hair stylist at Tres Jolie Hair in Ly
 | React Router | v6 |
 | uuid | v9 |
 
+Deployed on **Vercel** with a serverless API route for GitHub PR creation.
+
 No UI framework — all styles are plain CSS using CSS custom properties.
 
 ---
@@ -64,30 +66,27 @@ npm run preview
 - Add, edit, and delete client profiles
 - Profile photo upload with drag-to-crop modal
 - Portfolio photo uploads (multiple, compressed automatically)
-- All client data stored in `localStorage`
-- Optional file-based storage — connect a JSON file to auto-save on every change
+- **Open PR** button — submits all pending changes to GitHub as a pull request
+- Merging the PR triggers an automatic Vercel deployment
 
 ---
 
 ## Data Storage
 
-Client records are stored in `localStorage` under the key `kendra_clients`. This is the same key used by the original vanilla JS version of the site, so data is fully compatible between both versions.
+Client records are stored in `public/clients.json` inside the repository. The site fetches this file at load time. Images are stored as files under `public/images/`.
 
-### File-Based Storage (Optional)
+This means all data is version-controlled — every client add, edit, or delete is a commit with a full history and easy rollback.
 
-The admin panel supports connecting a `.json` file on disk as a persistent data store. Once connected, every add, edit, and delete automatically writes the full client list to the file in addition to `localStorage`.
-
-**How to use:**
+### Admin Workflow
 
 1. Go to `/admin` and sign in
-2. In the controls bar, click **New File** to create a new `kendra-clients.json`, or **Open File** to connect an existing one
-3. A green **✓ File connected** badge confirms the connection
-4. All changes from that point forward are written to the file automatically
-5. Click **Disconnect** to unlink the file without losing any data
-
-The JSON file uses the same schema as `localStorage` and can be backed up, shared, or re-imported at any time.
-
-> **Browser support:** File-based storage uses the [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API) and requires **Chrome or Edge**. The connection resets on page reload — click **Open File** to reconnect each session.
+2. Add, edit, or delete clients as needed (changes are held in local state)
+3. Click **Open PR** — the admin panel calls the serverless API, which:
+   - Creates a new branch in the GitHub repo
+   - Commits the updated `clients.json` and any new image files
+   - Opens a pull request
+4. Review and merge the PR on GitHub
+5. Vercel automatically redeploys within ~1 minute
 
 ### Client Schema
 
@@ -101,8 +100,8 @@ interface Client {
   favService: string;     // Favorite Tres Jolie Hair service
   website: string;
   notes: string;          // Services offered, one per line
-  photo: string | null;   // Base64 JPEG (cropped to 400×400)
-  portfolio: string[];    // Base64 JPEG array (compressed to max 800px wide)
+  photo: string | null;   // Path to image file, e.g. /images/abc123-profile.jpg
+  portfolio: string[];    // Array of image paths, e.g. /images/abc123-portfolio-0.jpg
   instagram: string;
   tiktok: string;
   email: string;
@@ -115,6 +114,25 @@ interface Client {
 - **Profile photo** — cropped to a 400×400 square via an in-browser drag-to-crop tool, saved as JPEG at 85% quality
 - **Portfolio photos** — scaled down to max 800px width, saved as JPEG at 80% quality
 - Max upload size: 15 MB per file
+
+---
+
+## Deployment
+
+The site is deployed on Vercel. Vercel automatically deploys on every push to `master` via the GitHub integration — no manual workflow needed.
+
+### Environment Variables
+
+Set these in **Vercel → Project Settings → Environment Variables**:
+
+| Variable | Description |
+|----------|-------------|
+| `GITHUB_TOKEN` | Fine-grained PAT with **Contents: Read & Write** and **Pull requests: Read & Write** on this repo |
+| `GITHUB_OWNER` | GitHub username or org that owns the repo |
+| `GITHUB_REPO` | Repository name (e.g. `KendrasChair`) |
+| `GITHUB_BASE_BRANCH` | Branch PRs target (default: `master`) |
+
+See [`.env.example`](.env.example) for a template.
 
 ---
 
@@ -153,26 +171,32 @@ Each profession in the gallery is assigned one of 8 distinct color themes (pink,
 ## Project Structure
 
 ```
+api/
+└── submit-changes.ts    # Vercel serverless function — creates GitHub branch, commits files, opens PR
+public/
+├── clients.json         # Source of truth for all client data
+└── images/              # Client profile and portfolio photos
 src/
-├── main.tsx                 # React entry point
-├── App.tsx                  # Router setup
-├── index.css                # Global styles, CSS variables
+├── main.tsx             # React entry point
+├── App.tsx              # Router setup
+├── index.css            # Global styles, CSS variables
 ├── types/
-│   └── index.ts             # Client interface, SortMode type
+│   └── index.ts         # Client interface, SortMode type
+├── context/
+│   └── ClientsContext.tsx  # Fetches clients.json; provides clients + setClients
 ├── utils/
-│   ├── storage.ts           # localStorage read/write helpers
-│   ├── fileStorage.ts       # File System Access API helpers (optional file sync)
-│   ├── colors.ts            # Profession chip color mapping
-│   ├── image.ts             # Canvas-based image compression + crop
-│   └── auth.ts              # sessionStorage auth helpers
+│   ├── storage.ts       # Fetches /clients.json
+│   ├── colors.ts        # Profession chip color mapping
+│   ├── image.ts         # Canvas-based image compression + crop
+│   └── auth.ts          # sessionStorage auth helpers
 ├── components/
 │   ├── Lightbox.tsx/.css    # Photo lightbox with keyboard navigation
 │   └── CropModal.tsx/.css   # Drag-to-crop profile photo modal
 └── pages/
-    ├── Home.tsx/.css        # Landing page
-    ├── Gallery.tsx/.css     # Client gallery
+    ├── Home.tsx/.css         # Landing page
+    ├── Gallery.tsx/.css      # Client gallery
     ├── ClientDetail.tsx/.css # Individual client view
-    └── Admin.tsx/.css       # Admin panel
+    └── Admin.tsx/.css        # Admin panel
 ```
 
 ---
@@ -182,15 +206,3 @@ src/
 The default admin password is `Oliver`. It is checked against `sessionStorage` so it persists for the browser session but resets when the tab is closed.
 
 To change it, update the `ADMIN_PASSWORD` constant in [src/utils/auth.ts](src/utils/auth.ts).
-
----
-
-## Original Site
-
-This is a TypeScript/React rebuild of the original vanilla HTML/JS site located at:
-
-```
-../Kendra Website/
-```
-
-The original site's `localStorage` data is fully compatible — both versions read from and write to the same `kendra_clients` key.

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loadClients } from '../utils/storage';
+import { useClients } from '../context/ClientsContext';
 import { buildProfColorMap } from '../utils/colors';
 import { getInitials } from '../utils/image';
 import type { Client, SortMode } from '../types';
@@ -102,7 +102,7 @@ function ClientCard({ client, colorMap, animDelay, isOpening, onClick }: ClientC
 }
 
 export default function Gallery() {
-  const [clients] = useState<Client[]>(() => loadClients());
+  const { clients, loading } = useClients();
   const [search, setSearch] = useState('');
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [sortMode, setSortMode] = useState<SortMode>('default');
@@ -235,7 +235,9 @@ export default function Gallery() {
 
       {/* Grid */}
       <main className="gallery-main">
-        {visible.length === 0 ? (
+        {loading ? (
+          <div className="empty-state"><p>Loading…</p></div>
+        ) : visible.length === 0 ? (
           <div className="empty-state">
             <p>{emptyMsg}</p>
             {clients.length === 0 && (

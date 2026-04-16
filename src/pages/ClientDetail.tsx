@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { loadClients } from '../utils/storage';
+import { useClients } from '../context/ClientsContext';
 import { buildProfColorMap } from '../utils/colors';
 import { getInitials } from '../utils/image';
 import Lightbox from '../components/Lightbox';
@@ -8,12 +8,23 @@ import './ClientDetail.css';
 
 export default function ClientDetail() {
   const { id } = useParams<{ id: string }>();
-  const clients = useMemo(() => loadClients(), []);
+  const { clients, loading } = useClients();
   const client = useMemo(() => clients.find(c => c.id === id), [clients, id]);
   const colorMap = useMemo(() => buildProfColorMap(clients), [clients]);
 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [profileLightbox, setProfileLightbox] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="detail-page">
+        <nav className="detail-nav">
+          <Link to="/gallery" className="detail-back">&#8592; Back to gallery</Link>
+        </nav>
+        <div className="detail-not-found"><p>Loading…</p></div>
+      </div>
+    );
+  }
 
   if (!client) {
     return (

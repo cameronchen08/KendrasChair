@@ -1,11 +1,10 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { Link, useBlocker } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { loadClients, saveClients } from '../utils/storage';
-import { connectFile, createFile, writeToFile, disconnectFile, isFileConnected } from '../utils/fileStorage';
+import { useClients } from '../context/ClientsContext';
 import { buildProfColorMap } from '../utils/colors';
 import { getInitials, compressImage, readFileAsDataUrl } from '../utils/image';
-import { isAuthenticated, authenticate, signOut } from '../utils/auth';
+import { isAuthenticated, authenticate, signOut, getStoredPassword } from '../utils/auth';
 import CropModal from '../components/CropModal';
 import type { Client } from '../types';
 import './Admin.css';
@@ -57,7 +56,7 @@ function AuthGate({ onAuth }: { onAuth: () => void }) {
             onChange={e => { setPassword(e.target.value); setError(false); }}
             autoFocus
           />
-          {error && <span className="form-error">Incorrect password. Try again.</span>}
+          {error && <span className="form-error">Please enter a password.</span>}
           <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
             Unlock
           </button>
@@ -98,7 +97,6 @@ function FormModal({ initial, onSave, onClose }: FormModalProps) {
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState('');
   const [errors, setErrors] = useState<{ name?: string; profession?: string }>({});
-  const [saveError, setSaveError] = useState('');
 
   const photoInputRef = useRef<HTMLInputElement>(null);
   const portfolioInputRef = useRef<HTMLInputElement>(null);
@@ -134,7 +132,6 @@ function FormModal({ initial, onSave, onClose }: FormModalProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSaveError('');
     const newErrors: { name?: string; profession?: string } = {};
     if (!form.name.trim()) newErrors.name = 'Name is required';
     if (!form.profession.trim()) newErrors.profession = 'Profession is required';
@@ -363,8 +360,6 @@ function FormModal({ initial, onSave, onClose }: FormModalProps) {
               />
             </div>
 
-            {saveError && <span className="form-error" style={{ display: 'block', marginBottom: 12 }}>{saveError}</span>}
-
             <div className="form-actions">
               <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
               <button type="submit" className="btn-primary">
@@ -416,12 +411,47 @@ function DeleteDialog({ clientName, onConfirm, onCancel }: {
 
 export default function Admin() {
   const [authed, setAuthed] = useState(isAuthenticated);
-  const [clients, setClients] = useState<Client[]>(() => loadClients());
+  const { clients, setClients, loading } = useClients();
   const [search, setSearch] = useState('');
   const [editingClient, setEditingClient] = useState<Client | undefined>(undefined);
   const [showForm, setShowForm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [fileConnected, setFileConnected] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [prUrl, setPrUrl] = useState<string | null>(null);
+  const [committedSnapshot, setCommittedSnapshot] = useState<string | null>(null);
+  const snapshotSet = useRef(false);
+
+  // Capture committed state once the initial fetch resolves
+  useEffect(() => {
+    if (!loading && !snapshotSet.current) {
+      snapshotSet.current = true;
+      setCommittedSnapshot(JSON.stringify(clients));
+    }
+  }, [loading, clients]);
+
+  const hasChanges = useMemo(
+    () => committedSnapshot !== null && JSON.stringify(clients) !== committedSnapshot,
+    [clients, committedSnapshot]
+  );
+
+  // Warn on browser close/refresh when there are unsaved changes
+  useEffect(() => {
+    if (!hasChanges) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [hasChanges]);
+
+  // Warn on in-app navigation when there are unsaved changes
+  const blocker = useBlocker(hasChanges);
+  useEffect(() => {
+    if (blocker.state !== 'blocked') return;
+    if (window.confirm('You have unsaved changes. Leave without opening a PR?')) {
+      blocker.proceed();
+    } else {
+      blocker.reset();
+    }
+  }, [blocker]);
 
   const colorMap = useMemo(() => buildProfColorMap(clients), [clients]);
 
@@ -438,23 +468,84 @@ export default function Admin() {
     const next = clients.find(c => c.id === client.id)
       ? clients.map(c => c.id === client.id ? client : c)
       : [...clients, client];
-
-    if (!saveClients(next)) {
-      alert('Failed to save — localStorage may be full.');
-      return;
-    }
-    if (isFileConnected()) writeToFile(next);
     setClients(next);
     setShowForm(false);
     setEditingClient(undefined);
+    setPrUrl(null);
   }
 
   function handleDelete(id: string) {
-    const next = clients.filter(c => c.id !== id);
-    saveClients(next);
-    if (isFileConnected()) writeToFile(next);
-    setClients(next);
+    setClients(clients.filter(c => c.id !== id));
     setDeleteId(null);
+    setPrUrl(null);
+  }
+
+  async function openPR() {
+    setSubmitting(true);
+    setPrUrl(null);
+    try {
+      const newImages: { repoPath: string; base64: string }[] = [];
+
+      const processedClients = clients.map(client => {
+        let photo = client.photo;
+        if (photo?.startsWith('data:')) {
+          const repoPath = `images/${client.id}-profile.jpg`;
+          newImages.push({ repoPath, base64: photo });
+          photo = `/${repoPath}`;
+        }
+
+        const portfolio = client.portfolio.map((p, i) => {
+          if (p.startsWith('data:')) {
+            const repoPath = `images/${client.id}-portfolio-${i}.jpg`;
+            newImages.push({ repoPath, base64: p });
+            return `/${repoPath}`;
+          }
+          return p;
+        });
+
+        return { ...client, photo, portfolio };
+      });
+
+      // Find image paths that existed in the committed state but are gone now
+      const committedClients: Client[] = JSON.parse(committedSnapshot ?? '[]');
+      const committedPaths = new Set<string>();
+      committedClients.forEach(c => {
+        if (c.photo && !c.photo.startsWith('data:')) committedPaths.add(c.photo);
+        c.portfolio.forEach(p => { if (!p.startsWith('data:')) committedPaths.add(p); });
+      });
+      const newPaths = new Set<string>();
+      processedClients.forEach(c => {
+        if (c.photo) newPaths.add(c.photo as string);
+        (c.portfolio as string[]).forEach(p => newPaths.add(p));
+      });
+      const deletedImages = [...committedPaths].filter(p => !newPaths.has(p));
+
+      const res = await fetch('/api/submit-changes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clients: processedClients,
+          newImages,
+          deletedImages,
+          password: getStoredPassword(),
+        }),
+      });
+
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error || 'Request failed');
+      }
+
+      const { prUrl: url } = await res.json();
+      setPrUrl(url);
+      // Update in-memory state and snapshot to reflect what was committed
+      setClients(processedClients as Client[]);
+      setCommittedSnapshot(JSON.stringify(processedClients));
+    } catch (err) {
+      alert(`Failed to open PR: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function openAdd() {
@@ -470,25 +561,6 @@ export default function Admin() {
   function handleSignOut() {
     signOut();
     setAuthed(false);
-  }
-
-  async function handleConnectFile() {
-    const loaded = await connectFile();
-    if (loaded !== null) {
-      saveClients(loaded);
-      setClients(loaded);
-      setFileConnected(true);
-    }
-  }
-
-  async function handleCreateFile() {
-    const ok = await createFile(clients);
-    if (ok) setFileConnected(true);
-  }
-
-  function handleDisconnectFile() {
-    disconnectFile();
-    setFileConnected(false);
   }
 
   if (!authed) {
@@ -514,6 +586,15 @@ export default function Admin() {
         </div>
       </header>
 
+      {/* PR success banner */}
+      {prUrl && (
+        <div className="pr-banner">
+          <span>&#10003; PR opened —</span>
+          <a href={prUrl} target="_blank" rel="noopener noreferrer">Review &amp; merge on GitHub</a>
+          <button className="pr-banner-dismiss" onClick={() => setPrUrl(null)}>&times;</button>
+        </div>
+      )}
+
       {/* Controls */}
       <div className="admin-controls">
         <div className="admin-search-wrap">
@@ -525,19 +606,13 @@ export default function Admin() {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-        <div className="admin-file-controls">
-          {fileConnected ? (
-            <>
-              <span className="file-status file-status--connected">&#10003; File connected</span>
-              <button className="btn-ghost" onClick={handleDisconnectFile}>Disconnect</button>
-            </>
-          ) : (
-            <>
-              <button className="btn-secondary" onClick={handleConnectFile}>Open File</button>
-              <button className="btn-secondary" onClick={handleCreateFile}>New File</button>
-            </>
-          )}
-        </div>
+        <button
+          className="btn-secondary"
+          onClick={openPR}
+          disabled={submitting || !hasChanges}
+        >
+          {submitting ? 'Opening PR…' : 'Open PR'}
+        </button>
         <button className="btn-primary" onClick={openAdd}>+ Add Client</button>
       </div>
 
