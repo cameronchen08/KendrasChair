@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
-import { Link, useBlocker } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useClients } from '../context/ClientsContext';
 import { buildProfColorMap } from '../utils/colors';
@@ -441,17 +441,6 @@ export default function Admin() {
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);
   }, [hasChanges]);
-
-  // Warn on in-app navigation when there are unsaved changes
-  const blocker = useBlocker(hasChanges);
-  useEffect(() => {
-    if (blocker.state !== 'blocked') return;
-    if (window.confirm('You have unsaved changes. Leave without opening a PR?')) {
-      blocker.proceed();
-    } else {
-      blocker.reset();
-    }
-  }, [blocker]);
 
   const colorMap = useMemo(() => buildProfColorMap(clients), [clients]);
 
