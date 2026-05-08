@@ -8,8 +8,12 @@ export function isAuthenticated(): boolean {
 // Accepts any non-empty password — real validation happens server-side in the API.
 export function authenticate(password: string): boolean {
   if (!password.trim()) return false;
-  sessionStorage.setItem(AUTH_KEY, '1');
-  sessionStorage.setItem(AUTH_PWD_KEY, password);
+  try {
+    sessionStorage.setItem(AUTH_KEY, '1');
+    sessionStorage.setItem(AUTH_PWD_KEY, password);
+  } catch {
+    // sessionStorage unavailable — proceed without persisting (auth lasts this page only)
+  }
   return true;
 }
 

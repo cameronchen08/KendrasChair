@@ -38,12 +38,28 @@
 /* ── Auth gate ────────────────────────────────────────────────── */
 
 .auth-overlay {
-  min-height: 100vh;
+  position: fixed;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  overflow-y: auto;
   background: linear-gradient(135deg, #3d5235, #7a8a60);
+}
+
+@media (max-width: 640px) {
+  .auth-overlay {
+    align-items: flex-start;
+    padding-top: 32px;
+  }
+  .auth-dialog {
+    padding: 28px 24px;
+    gap: 10px;
+  }
+  .auth-icon {
+    font-size: 2.2rem;
+  }
 }
 
 .auth-dialog {
