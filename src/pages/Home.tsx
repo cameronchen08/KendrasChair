@@ -188,7 +188,7 @@ export default function Home() {
               <p>
                 Tres Jolie Hair<br />
                 Salon Republic Alderwood<br /><br />
-                18205 Alderwood Mall Pkwy, STE #A Room 102<br />
+                18205 Alderwood Mall Pkwy, STE #A <br />
                 Lynwood, WA 98037
               </p>
               <p>
@@ -207,7 +207,7 @@ export default function Home() {
               <div className="hours-table">
                 {[
                   ['Monday', 'Closed'],
-                  ['Tuesday', '7am – 4pm'],
+                  ['Tuesday', '10am – 4pm'],
                   ['Wednesday', '7am – 4pm'],
                   ['Thursday', '7am – 1pm'],
                   ['Friday', '7am – 4pm'],
