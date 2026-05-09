@@ -34,13 +34,22 @@ async function getFileSha(path: string, branch: string): Promise<string | undefi
 }
 
 async function putFile(repoPath: string, base64Content: string, message: string, branch: string) {
-  const sha = await getFileSha(repoPath, branch);
-  await gh(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, 'PUT', {
-    message,
-    content: base64Content,
-    branch,
-    ...(sha ? { sha } : {}),
-  });
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const sha = await getFileSha(repoPath, branch);
+    try {
+      await gh(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, 'PUT', {
+        message,
+        content: base64Content,
+        branch,
+        ...(sha ? { sha } : {}),
+      });
+      return;
+    } catch (err) {
+      const is409 = err instanceof Error && err.message.includes('409');
+      if (is409 && attempt < 2) continue; // re-fetch SHA and retry
+      throw err;
+    }
+  }
 }
 
 async function deleteFile(repoPath: string, message: string, branch: string) {
