@@ -5,6 +5,7 @@ import { useClients } from '../context/ClientsContext';
 import { buildProfColorMap } from '../utils/colors';
 import { getInitials, compressImage, readFileAsDataUrl } from '../utils/image';
 import { isAuthenticated, authenticate, signOut, getStoredPassword } from '../utils/auth';
+import { cacheClients } from '../utils/storage';
 import CropModal from '../components/CropModal';
 import type { Client } from '../types';
 import './Admin.css';
@@ -528,6 +529,7 @@ export default function Admin() {
       setSaved(true);
       setClients(processedClients as Client[]);
       setCommittedSnapshot(JSON.stringify(processedClients));
+      cacheClients(processedClients as Client[]);
     } catch (err) {
       alert(`Failed to save: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
