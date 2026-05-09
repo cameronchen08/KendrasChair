@@ -417,7 +417,7 @@ export default function Admin() {
   const [showForm, setShowForm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [prUrl, setPrUrl] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
   const [committedSnapshot, setCommittedSnapshot] = useState<string | null>(null);
   const snapshotSet = useRef(false);
 
@@ -460,18 +460,18 @@ export default function Admin() {
     setClients(next);
     setShowForm(false);
     setEditingClient(undefined);
-    setPrUrl(null);
+    setSaved(false);
   }
 
   function handleDelete(id: string) {
     setClients(clients.filter(c => c.id !== id));
     setDeleteId(null);
-    setPrUrl(null);
+    setSaved(false);
   }
 
-  async function openPR() {
+  async function saveChanges() {
     setSubmitting(true);
-    setPrUrl(null);
+    setSaved(false);
     try {
       const newImages: { repoPath: string; base64: string }[] = [];
 
@@ -525,13 +525,11 @@ export default function Admin() {
         throw new Error(error || 'Request failed');
       }
 
-      const { prUrl: url } = await res.json();
-      setPrUrl(url);
-      // Update in-memory state and snapshot to reflect what was committed
+      setSaved(true);
       setClients(processedClients as Client[]);
       setCommittedSnapshot(JSON.stringify(processedClients));
     } catch (err) {
-      alert(`Failed to open PR: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      alert(`Failed to save: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setSubmitting(false);
     }
@@ -575,12 +573,11 @@ export default function Admin() {
         </div>
       </header>
 
-      {/* PR success banner */}
-      {prUrl && (
+      {/* Save success banner */}
+      {saved && (
         <div className="pr-banner">
-          <span>&#10003; PR opened —</span>
-          <a href={prUrl} target="_blank" rel="noopener noreferrer">Review &amp; merge on GitHub</a>
-          <button className="pr-banner-dismiss" onClick={() => setPrUrl(null)}>&times;</button>
+          <span>&#10003; Saved — changes will be live in ~1 minute.</span>
+          <button className="pr-banner-dismiss" onClick={() => setSaved(false)}>&times;</button>
         </div>
       )}
 
@@ -597,10 +594,10 @@ export default function Admin() {
         </div>
         <button
           className="btn-secondary"
-          onClick={openPR}
+          onClick={saveChanges}
           disabled={submitting || !hasChanges}
         >
-          {submitting ? 'Opening PR…' : 'Open PR'}
+          {submitting ? 'Saving…' : 'Save'}
         </button>
         <button className="btn-primary" onClick={openAdd}>+ Add Client</button>
       </div>

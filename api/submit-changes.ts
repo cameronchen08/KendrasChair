@@ -45,7 +45,7 @@ async function putFile(repoPath: string, base64Content: string, message: string,
 
 async function deleteFile(repoPath: string, message: string, branch: string) {
   const sha = await getFileSha(repoPath, branch);
-  if (!sha) return; // already gone
+  if (!sha) return;
   await gh(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, 'DELETE', {
     message,
     sha,
@@ -62,7 +62,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Server not configured — missing environment variables' });
   }
 
-  // Validate password server-side
   const { clients, newImages, deletedImages, password } = req.body as {
     clients: object[];
     newImages: { repoPath: string; base64: string }[];
@@ -75,41 +74,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // 1. Get base branch SHA
-    const refData = await gh(`/repos/${OWNER}/${REPO}/git/ref/heads/${BASE_BRANCH}`, 'GET') as { object: { sha: string } };
-    const baseSha = refData.object.sha;
-
-    // 2. Create new branch
-    const branch = `clients-update-${Date.now()}`;
-    await gh(`/repos/${OWNER}/${REPO}/git/refs`, 'POST', {
-      ref: `refs/heads/${branch}`,
-      sha: baseSha,
-    });
-
-    // 3. Commit clients.json
+    // Commit clients.json directly to the base branch
     const clientsBase64 = Buffer.from(JSON.stringify(clients, null, 2)).toString('base64');
-    await putFile('public/clients.json', clientsBase64, 'Update client data', branch);
+    await putFile('public/clients.json', clientsBase64, 'Update client gallery', BASE_BRANCH);
 
-    // 4. Commit new images and delete orphaned images in parallel
+    // Commit new images and delete orphaned images in parallel
     await Promise.all([
       ...newImages.map(img => {
         const base64Content = img.base64.includes(',') ? img.base64.split(',')[1] : img.base64;
-        return putFile(`public/${img.repoPath}`, base64Content, `Add image ${img.repoPath}`, branch);
+        return putFile(`public/${img.repoPath}`, base64Content, `Add image ${img.repoPath}`, BASE_BRANCH);
       }),
       ...(deletedImages ?? []).map((imgPath: string) =>
-        deleteFile(`public${imgPath}`, `Remove image ${imgPath}`, branch)
+        deleteFile(`public${imgPath}`, `Remove image ${imgPath}`, BASE_BRANCH)
       ),
     ]);
 
-    // 5. Open PR
-    const pr = await gh(`/repos/${OWNER}/${REPO}/pulls`, 'POST', {
-      title: 'Update client gallery',
-      body: 'Automated update from the admin panel. Review and merge to publish.',
-      head: branch,
-      base: BASE_BRANCH,
-    }) as { html_url: string };
-
-    return res.status(200).json({ prUrl: pr.html_url });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' });
