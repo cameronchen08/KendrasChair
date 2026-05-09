@@ -3,16 +3,22 @@
     "id": "884b1fdb-c391-4c93-a5bc-5f3d2feac684",
     "name": "Kendra Huba",
     "profession": "Hair Stylist",
-    "profDesc": "",
+    "profDesc": "Creator and stylist behind Tres Jolie Hair in Lynwood, WA. Color theory enthusiast and dachshund mom.",
     "pronouns": "",
     "favService": "",
-    "website": "",
-    "notes": "",
-    "instagram": "",
-    "tiktok": "",
+    "website": "tresjoliehair.glossgenius.com",
+    "notes": "Haircuts\nColoring\nCustom Blonding\nBlowout and Styling",
+    "instagram": "kendranhair",
+    "tiktok": "kennywiththegoodhair",
     "email": "",
     "phone": "",
     "photo": "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-profile.jpg",
-    "portfolio": []
+    "portfolio": [
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-0.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-1.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-2.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-3.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-4.jpg"
+    ]
   }
 ]
