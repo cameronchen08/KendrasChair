@@ -24,44 +24,6 @@ async function gh(path: string, method: string, body?: object) {
   return res.status === 204 ? null : res.json();
 }
 
-async function getFileSha(path: string, branch: string): Promise<string | undefined> {
-  try {
-    const data = await gh(`/repos/${OWNER}/${REPO}/contents/${path}?ref=${branch}`, 'GET');
-    return (data as { sha: string }).sha;
-  } catch {
-    return undefined;
-  }
-}
-
-async function putFile(repoPath: string, base64Content: string, message: string, branch: string) {
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const sha = await getFileSha(repoPath, branch);
-    try {
-      await gh(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, 'PUT', {
-        message,
-        content: base64Content,
-        branch,
-        ...(sha ? { sha } : {}),
-      });
-      return;
-    } catch (err) {
-      const is409 = err instanceof Error && err.message.includes('409');
-      if (is409 && attempt < 2) continue; // re-fetch SHA and retry
-      throw err;
-    }
-  }
-}
-
-async function deleteFile(repoPath: string, message: string, branch: string) {
-  const sha = await getFileSha(repoPath, branch);
-  if (!sha) return;
-  await gh(`/repos/${OWNER}/${REPO}/contents/${repoPath}`, 'DELETE', {
-    message,
-    sha,
-    branch,
-  });
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -83,20 +45,50 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Commit clients.json directly to the base branch
-    const clientsBase64 = Buffer.from(JSON.stringify(clients, null, 2)).toString('base64');
-    await putFile('public/clients.json', clientsBase64, 'Update client gallery', BASE_BRANCH);
+    // 1. Get current branch commit SHA and tree SHA
+    const ref = await gh(`/repos/${OWNER}/${REPO}/git/ref/heads/${BASE_BRANCH}`, 'GET') as { object: { sha: string } };
+    const commitSha = ref.object.sha;
+    const commit = await gh(`/repos/${OWNER}/${REPO}/git/commits/${commitSha}`, 'GET') as { tree: { sha: string } };
+    const treeSha = commit.tree.sha;
 
-    // Commit new images and delete orphaned images in parallel
-    await Promise.all([
-      ...newImages.map(img => {
-        const base64Content = img.base64.includes(',') ? img.base64.split(',')[1] : img.base64;
-        return putFile(`public/${img.repoPath}`, base64Content, `Add image ${img.repoPath}`, BASE_BRANCH);
+    // 2. Create blobs for all new content in parallel (no per-file SHA needed)
+    const [clientsBlob, ...imageBlobs] = await Promise.all([
+      gh(`/repos/${OWNER}/${REPO}/git/blobs`, 'POST', {
+        content: JSON.stringify(clients, null, 2),
+        encoding: 'utf-8',
       }),
-      ...(deletedImages ?? []).map((imgPath: string) =>
-        deleteFile(`public${imgPath}`, `Remove image ${imgPath}`, BASE_BRANCH)
-      ),
-    ]);
+      ...newImages.map(img => {
+        const content = img.base64.includes(',') ? img.base64.split(',')[1] : img.base64;
+        return gh(`/repos/${OWNER}/${REPO}/git/blobs`, 'POST', { content, encoding: 'base64' });
+      }),
+    ]) as { sha: string }[];
+
+    // 3. Build tree entries
+    const tree: { path: string; mode: string; type: string; sha: string | null }[] = [
+      { path: 'public/clients.json', mode: '100644', type: 'blob', sha: clientsBlob.sha },
+      ...newImages.map((img, i) => ({
+        path: `public/${img.repoPath}`,
+        mode: '100644',
+        type: 'blob',
+        sha: imageBlobs[i].sha,
+      })),
+      // Deletions: sha null removes the file from the tree
+      ...(deletedImages ?? []).map(imgPath => ({
+        path: `public${imgPath}`,
+        mode: '100644',
+        type: 'blob',
+        sha: null,
+      })),
+    ];
+
+    // 4. Create new tree, commit, and update branch ref
+    const newTree = await gh(`/repos/${OWNER}/${REPO}/git/trees`, 'POST', { base_tree: treeSha, tree }) as { sha: string };
+    const newCommit = await gh(`/repos/${OWNER}/${REPO}/git/commits`, 'POST', {
+      message: 'Update client gallery',
+      tree: newTree.sha,
+      parents: [commitSha],
+    }) as { sha: string };
+    await gh(`/repos/${OWNER}/${REPO}/git/refs/heads/${BASE_BRANCH}`, 'PATCH', { sha: newCommit.sha });
 
     return res.status(200).json({ success: true });
   } catch (err) {
