@@ -217,5 +217,23 @@
     "phone": "",
     "photo": null,
     "portfolio": []
+  },
+  {
+    "id": "62850b99-055e-43fc-ba95-f70e606219f8",
+    "name": "Sage Taber and Jana Belisle",
+    "profession": "Wellness - Bath and Body",
+    "profDesc": "We are a mother-daughter botanical bath and body brand. Orange Moon Bath Co. creates bathing rituals rooted in botanical care, sensory beauty, and the quiet magic of water. Handcrafted in small batches in the Pacific Northwest, each offering invites you to soften, restore, and return to yourself",
+    "pronouns": "she/her",
+    "favService": "",
+    "website": "Orangemoonbathco.com",
+    "notes": "Bath Bombs\nMineral Bath Soaks\nBotanical Body Scrubs",
+    "instagram": "orangemoonbathco",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": "/images/62850b99-055e-43fc-ba95-f70e606219f8-profile.jpg",
+    "portfolio": [
+      "/images/62850b99-055e-43fc-ba95-f70e606219f8-portfolio-0.jpg"
+    ]
   }
 ]
