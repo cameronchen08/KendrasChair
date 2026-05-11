@@ -13,6 +13,11 @@
     "email": "",
     "phone": "",
     "photo": "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-profile.jpg",
-    "portfolio": []
+    "portfolio": [
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-0.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-1.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-2.jpg",
+      "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-3.jpg"
+    ]
   }
 ]
