@@ -67,5 +67,21 @@
     "phone": "206-331-2767",
     "photo": "/images/2a2e4851-2f3e-48b7-bbd7-a8ea2501a063-profile.jpg",
     "portfolio": []
+  },
+  {
+    "id": "83cfa442-facf-4474-9069-ccd56c3f3b4e",
+    "name": "Katherine Rutigliano",
+    "profession": "Personal/Private Chef",
+    "profDesc": "I offer a wide range of personal services from catering dinner parties, meal delivery, or just showing up groceries in hand and filling your fridge.",
+    "pronouns": "",
+    "favService": "Haircut",
+    "website": "https://table-well.com/",
+    "notes": "Catering\nMeal Delivery\nPersonal Meals",
+    "instagram": "Tablewellinfo",
+    "tiktok": "",
+    "email": "Tablewellinfo@gmail.com",
+    "phone": "",
+    "photo": "/images/83cfa442-facf-4474-9069-ccd56c3f3b4e-profile.jpg",
+    "portfolio": []
   }
 ]
