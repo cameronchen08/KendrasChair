@@ -269,5 +269,21 @@
     "portfolio": [
       "/images/e4d7743b-9032-4692-942e-dd537b43104b-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "4e42ceed-5b0a-4107-8fe3-5c8569f4912b",
+    "name": "Oliver Huba",
+    "profession": "General Manager",
+    "profDesc": "General Manager of Tres Jolie Hair in Lynwood Washington. Home security enthusiast and cuddler.",
+    "pronouns": "",
+    "favService": "Blowout",
+    "website": "",
+    "notes": "Security\nCuddles",
+    "instagram": "oliver_the_mini_dachshund",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": "/images/4e42ceed-5b0a-4107-8fe3-5c8569f4912b-profile.jpg",
+    "portfolio": []
   }
 ]
