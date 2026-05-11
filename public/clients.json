@@ -35,5 +35,37 @@
     "phone": "",
     "photo": "/images/5107e15d-703e-4801-b2f1-e82bae43c271-profile.jpg",
     "portfolio": []
+  },
+  {
+    "id": "ea47ba39-3602-43bf-b236-18241e381314",
+    "name": "Keith Wanser",
+    "profession": "Tax Attorney",
+    "profDesc": "",
+    "pronouns": "",
+    "favService": "Men's Haircut",
+    "website": "",
+    "notes": "Simple and complex individual tax returns\nSmall business structuring and advice",
+    "instagram": "",
+    "tiktok": "",
+    "email": "Wansertax@gmail.com",
+    "phone": "",
+    "photo": null,
+    "portfolio": []
+  },
+  {
+    "id": "2a2e4851-2f3e-48b7-bbd7-a8ea2501a063",
+    "name": "Shelley Korn",
+    "profession": "Real Estate Broker",
+    "profDesc": "Real Estate Broker specializing in residential home sales, buyer representation, and property marketing.",
+    "pronouns": "",
+    "favService": "Head Massage",
+    "website": "shelleykorn.com",
+    "notes": "Buying\nSelling\nInvesting\nMarket Expertise",
+    "instagram": "shelleykornrealestate",
+    "tiktok": "",
+    "email": "",
+    "phone": "206-331-2767",
+    "photo": "/images/2a2e4851-2f3e-48b7-bbd7-a8ea2501a063-profile.jpg",
+    "portfolio": []
   }
 ]
