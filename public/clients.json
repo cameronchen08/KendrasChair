@@ -251,5 +251,23 @@
     "phone": "571-839-2228",
     "photo": null,
     "portfolio": []
+  },
+  {
+    "id": "e4d7743b-9032-4692-942e-dd537b43104b",
+    "name": "Martha May",
+    "profession": "Instagram Model",
+    "profDesc": "Dachshund lifestyle influencer, fashion model, treat connoisseur, and certified fluffy girl.",
+    "pronouns": "",
+    "favService": "Tinsel",
+    "website": "cameronchen08.github.io/marthamaywashington",
+    "notes": "Fashion Modeling\nTreat Tasting\nHiking Companion",
+    "instagram": "marthamaywashington",
+    "tiktok": "",
+    "email": "marthamaywashington@gmail.com",
+    "phone": "",
+    "photo": "/images/e4d7743b-9032-4692-942e-dd537b43104b-profile.jpg",
+    "portfolio": [
+      "/images/e4d7743b-9032-4692-942e-dd537b43104b-portfolio-0.jpg"
+    ]
   }
 ]
