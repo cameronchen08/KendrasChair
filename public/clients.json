@@ -4,7 +4,7 @@
     "name": "Kendra Huba",
     "profession": "Hair Stylist",
     "profDesc": "Creator and stylist behind Tres Jolie Hair in Lynwood, WA. Color theory enthusiast and dachshund mom.",
-    "pronouns": "",
+    "pronouns": "she/her/hers",
     "favService": "",
     "website": "tresjoliehair.glossgenius.com",
     "notes": "Haircuts\nColoring\nCustom Blonding\nBlowout and Styling",
@@ -19,5 +19,21 @@
       "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-2.jpg",
       "/images/884b1fdb-c391-4c93-a5bc-5f3d2feac684-portfolio-3.jpg"
     ]
+  },
+  {
+    "id": "5107e15d-703e-4801-b2f1-e82bae43c271",
+    "name": "Cameron Chen",
+    "profession": "Software Developer",
+    "profDesc": "Freelance full-stack software developer, web developer, and mixed media artist.",
+    "pronouns": "she/her/hers",
+    "favService": "Extensions",
+    "website": "github.com/cameronchen08",
+    "notes": "Website Development\nApplication Development\nDigital Art",
+    "instagram": "",
+    "tiktok": "",
+    "email": "cameronchen08@gmailk.com",
+    "phone": "",
+    "photo": "/images/5107e15d-703e-4801-b2f1-e82bae43c271-profile.jpg",
+    "portfolio": []
   }
 ]
