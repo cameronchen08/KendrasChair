@@ -83,5 +83,21 @@
     "phone": "",
     "photo": "/images/83cfa442-facf-4474-9069-ccd56c3f3b4e-profile.jpg",
     "portfolio": []
+  },
+  {
+    "id": "287f0028-dc69-4207-852e-e189417b12c0",
+    "name": "Charity Atkinson",
+    "profession": "Investment Advisor",
+    "profDesc": "Investment servicing and wealth planning",
+    "pronouns": "",
+    "favService": "Haircut",
+    "website": "",
+    "notes": "Goal-based Investment Advice\nOngoing Management",
+    "instagram": "",
+    "tiktok": "",
+    "email": "charity.atkinson@jpmorgan.com",
+    "phone": "",
+    "photo": "/images/287f0028-dc69-4207-852e-e189417b12c0-profile.jpg",
+    "portfolio": []
   }
 ]
