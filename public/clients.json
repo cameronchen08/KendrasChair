@@ -201,5 +201,21 @@
     "phone": "",
     "photo": "/images/e4ea31b0-c13a-476b-b25b-59a063ed10fd-profile.jpg",
     "portfolio": []
+  },
+  {
+    "id": "de009d0a-fcd8-4901-9c07-69c704ea8883",
+    "name": "Crystal Kwok-Lee",
+    "profession": "Baker",
+    "profDesc": "Host pop ups, custom dessert orders",
+    "pronouns": "",
+    "favService": "Shampoo",
+    "website": "Saltandcreme.co",
+    "notes": "Dessert Catering\nWedding Cakes\nSpecial Event Cakes\nSourdough\nShokupan",
+    "instagram": "Saltandcreme",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": null,
+    "portfolio": []
   }
 ]
