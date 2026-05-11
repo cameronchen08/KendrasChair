@@ -109,11 +109,11 @@ export default function ClientDetail() {
               <span className="detail-section-label">Website</span>
               <a
                 className="detail-website"
-                href={client.website}
+                href={/^https?:\/\//i.test(client.website) ? client.website : `https://${client.website}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {client.website.replace(/^https?:\/\//, '')}
+                {client.website.replace(/^https?:\/\//i, '')}
               </a>
             </div>
           )}
