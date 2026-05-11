@@ -135,5 +135,23 @@
     "portfolio": [
       "/images/6413238c-30a5-42a2-b60b-c3b6a2ed71a3-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "860bf5f6-85aa-4637-8fa2-f370f8bef7fe",
+    "name": "Lacey Lee",
+    "profession": "Artist",
+    "profDesc": "Small artist living in Seattle/Lynnwood area, mostly do digital art in a children’s book illustration style. ✨",
+    "pronouns": "she/they",
+    "favService": "Blonding",
+    "website": "https://www.inprnt.com/gallery/littlecozydoodles/",
+    "notes": "Art Prints",
+    "instagram": "littlecozydoodles",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": null,
+    "portfolio": [
+      "/images/860bf5f6-85aa-4637-8fa2-f370f8bef7fe-portfolio-0.jpg"
+    ]
   }
 ]
