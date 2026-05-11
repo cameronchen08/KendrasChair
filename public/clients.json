@@ -224,7 +224,7 @@
     "profession": "Wellness - Bath and Body",
     "profDesc": "We are a mother-daughter botanical bath and body brand. Orange Moon Bath Co. creates bathing rituals rooted in botanical care, sensory beauty, and the quiet magic of water. Handcrafted in small batches in the Pacific Northwest, each offering invites you to soften, restore, and return to yourself",
     "pronouns": "she/her",
-    "favService": "",
+    "favService": "Everything",
     "website": "Orangemoonbathco.com",
     "notes": "Bath Bombs\nMineral Bath Soaks\nBotanical Body Scrubs",
     "instagram": "orangemoonbathco",
@@ -235,5 +235,21 @@
     "portfolio": [
       "/images/62850b99-055e-43fc-ba95-f70e606219f8-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "d0d9298f-7383-419c-be76-43954daf0c21",
+    "name": "Nelly Escobar",
+    "profession": "Cleaning Services",
+    "profDesc": "Residential and commercial cleaning services specializing in detailed, reliable, and high-quality cleaning solutions",
+    "pronouns": "she/her",
+    "favService": "Haircut",
+    "website": "",
+    "notes": "Residential and Commercial Cleaning\nDeep Cleaning\nMove-in/Move-out Cleaning\nRoutine Maintenance Cleaning \nDetailed Kitchen and Bathroom Sanitation",
+    "instagram": "",
+    "tiktok": "",
+    "email": "genesiscleaning77@yahoo.com",
+    "phone": "571-839-2228",
+    "photo": null,
+    "portfolio": []
   }
 ]
