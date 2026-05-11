@@ -153,5 +153,53 @@
     "portfolio": [
       "/images/860bf5f6-85aa-4637-8fa2-f370f8bef7fe-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "f9281875-028f-4c01-9994-34246ce73eb8",
+    "name": "Kylie Evans",
+    "profession": "Voice Teacher",
+    "profDesc": "",
+    "pronouns": "",
+    "favService": "Haircut",
+    "website": "thekyliemethod.com",
+    "notes": "Voice Lessons (Singing)\nGender Affirming Voice Lessons (Speech and Singing)",
+    "instagram": "kythevocalcoach",
+    "tiktok": "",
+    "email": "thekyliemethod@gmail.com",
+    "phone": "",
+    "photo": "/images/f9281875-028f-4c01-9994-34246ce73eb8-profile.jpg",
+    "portfolio": []
+  },
+  {
+    "id": "03950dce-5e7f-4234-9d37-2313e4d9a0e5",
+    "name": "Ashlie Thacker",
+    "profession": "Mental Health Therapist",
+    "profDesc": "Providing mental health therapy to individuals struggling with mood disorders, OCD, Bipolar, etc., and specializing in first responders/armed forces and their family members, perinatal/postpartum issues, and late-diagnosed neurodiverse humans.",
+    "pronouns": "she/her/hers",
+    "favService": "Haircut and Blowout",
+    "website": "blueorchidcounseling.com",
+    "notes": "Mental Health Therapy - Ages 13-65",
+    "instagram": "",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": "/images/03950dce-5e7f-4234-9d37-2313e4d9a0e5-profile.jpg",
+    "portfolio": []
+  },
+  {
+    "id": "e4ea31b0-c13a-476b-b25b-59a063ed10fd",
+    "name": "RaeLani Vakauke",
+    "profession": "Brand and Communication",
+    "profDesc": "Helping small and independently owned businesses develop their authentic brand voice and digital storytelling.",
+    "pronouns": "they/them",
+    "favService": "Single Process Color",
+    "website": "https://raelani.com/",
+    "notes": "Brand Strategy\nContent Creative Development and Planning\nPaid Social Media Marketing and Implementation",
+    "instagram": "raelaniii",
+    "tiktok": "",
+    "email": "hello@raelani.com",
+    "phone": "",
+    "photo": "/images/e4ea31b0-c13a-476b-b25b-59a063ed10fd-profile.jpg",
+    "portfolio": []
   }
 ]
