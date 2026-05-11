@@ -117,5 +117,23 @@
     "portfolio": [
       "/images/5dedc45c-f888-4784-983b-21a310671a14-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "6413238c-30a5-42a2-b60b-c3b6a2ed71a3",
+    "name": "Molly Vee",
+    "profession": "Tattoo Artist",
+    "profDesc": "I make permanent art for wonderful clients in an inclusive space.",
+    "pronouns": "she/her/hers",
+    "favService": "Shampoo and Weenie Cuddles",
+    "website": "Mollyveetattoo.com",
+    "notes": "Black Line Work\nCustom Tattooing\nFlash Tattoos\nBody Affirming Practices",
+    "instagram": "ladywolly",
+    "tiktok": "",
+    "email": "",
+    "phone": "",
+    "photo": "/images/6413238c-30a5-42a2-b60b-c3b6a2ed71a3-profile.jpg",
+    "portfolio": [
+      "/images/6413238c-30a5-42a2-b60b-c3b6a2ed71a3-portfolio-0.jpg"
+    ]
   }
 ]
