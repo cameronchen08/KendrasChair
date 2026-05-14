@@ -76,7 +76,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--blush), var(--rose));
+  background: linear-gradient(135deg, #fde8ee, #c0507a);
   font-family: var(--font-serif);
   font-size: 3rem;
   font-weight: 700;
