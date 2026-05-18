@@ -187,22 +187,6 @@
     "portfolio": []
   },
   {
-    "id": "e4ea31b0-c13a-476b-b25b-59a063ed10fd",
-    "name": "RaeLani Valaile",
-    "profession": "Brand and Communication",
-    "profDesc": "Helping small and independently owned businesses develop their authentic brand voice and digital storytelling.",
-    "pronouns": "they/them",
-    "favService": "Single Process Color",
-    "website": "https://raelani.com/",
-    "notes": "Brand Strategy\nContent Creative Development and Planning\nPaid Social Media Marketing and Implementation",
-    "instagram": "raelaniii",
-    "tiktok": "",
-    "email": "hello@raelani.com",
-    "phone": "",
-    "photo": "/images/e4ea31b0-c13a-476b-b25b-59a063ed10fd-profile.jpg",
-    "portfolio": []
-  },
-  {
     "id": "de009d0a-fcd8-4901-9c07-69c704ea8883",
     "name": "Crystal Kwok-Lee",
     "profession": "Baker",
@@ -303,5 +287,21 @@
     "portfolio": [
       "/images/6989f7ed-7bba-48d1-86f4-d165ed5a0c8d-portfolio-0.jpg"
     ]
+  },
+  {
+    "id": "c5f18a4e-f85c-42c0-822d-90c8ec086717",
+    "name": "Mackenzie Anderson",
+    "profession": "Esthetician",
+    "profDesc": "Sugarist",
+    "pronouns": "she/her",
+    "favService": "Haircut",
+    "website": "Sugarmamastudio.com",
+    "notes": "Body hair removal",
+    "instagram": "sugarmamastudio_",
+    "tiktok": "sugarmamastudio_",
+    "email": "",
+    "phone": "360-862-5462",
+    "photo": "/images/c5f18a4e-f85c-42c0-822d-90c8ec086717-profile.jpg",
+    "portfolio": []
   }
 ]
