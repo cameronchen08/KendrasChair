@@ -5,9 +5,11 @@ export function isAuthenticated(): boolean {
   return sessionStorage.getItem(AUTH_KEY) === '1';
 }
 
-// Accepts any non-empty password — real validation happens server-side in the API.
+const EXPECTED = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
+
 export function authenticate(password: string): boolean {
   if (!password.trim()) return false;
+  if (EXPECTED && password !== EXPECTED) return false;
   try {
     sessionStorage.setItem(AUTH_KEY, '1');
     sessionStorage.setItem(AUTH_PWD_KEY, password);
